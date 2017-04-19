@@ -1,27 +1,27 @@
 import React from 'react';
 import axios from 'axios';
 
-import { compose, withState, withHandlers, lifecycle,withPropsOnChange, withProps, defaultProps } from 'recompose';
+import { compose, withState, withHandlers, lifecycle, withPropsOnChange, withProps, defaultProps } from 'recompose';
 
 import './styles/movies.css';
 
 
 const enhance = compose(
-  withState('search', 'setSearch', 'ye'),
-  withHandlers({
-    onChange: props => event => {
-    console.log(event.target.value);
-    console.log('search',props);
-      props.setSearch(event.target.value);
-      props.update(event.target.value);
-    }
-  })
+    withState('search', 'setSearch', 'ye'),
+    withHandlers({
+        onChange: props => event => {
+            console.log(event.target.value);
+            console.log('search', props);
+            props.setSearch(event.target.value);
+            props.update(event.target.value);
+        }
+    })
 )
 
-const SearchBar = enhance (({onChange})=>
-        <div>
+const SearchBar = enhance(({ onChange }) =>
+    <div>
         <input onChange={onChange} />
-        </div>   
+    </div>
 )
 
 
@@ -38,7 +38,7 @@ const MovieList = ({ movies }) => {
                 <div key={id} className="pics col-lg-3 pull-left">
                     <h3>{item.Title}</h3>
 
-                    <img src={item.Poster} alt={item.Description}  />
+                    <img src={item.Poster} alt={item.Description} />
                 </div>
 
             ))}
@@ -46,42 +46,42 @@ const MovieList = ({ movies }) => {
         </div>)
 }
 
-const SingleMovie = ({singleMovie}) => {
-    return(<div>
+const SingleMovie = ({ singleMovie }) => {
+    return (<div>
 
     </div>
 
     )
 }
 
-const Movies = ({ movies,onChange,updateSearchHandler, updatedSearch }) => {
+const Movies = ({ movies, onChange, updateSearchHandler, updatedSearch }) => {
     return (
         <div>
 
-            <SearchBar update={updateSearchHandler}/>
+            <SearchBar update={updateSearchHandler} />
             <h2>You entered:{updatedSearch} </h2>
 
-            <MovieList movies={movies} /> 
+            <MovieList movies={movies} />
 
         </div>
     )
 }
-const httpCall = (search, cb)=>{
+const httpCall = (search, cb) => {
     axios({
-                method: 'get',
-                url: ' http://www.omdbapi.com/?s=' + search,
-            })
-                .then(function (response) {
-                    console.log('search', search)
-                    cb(response.data.Search || []);
-                });
-        }
+        method: 'get',
+        url: ' http://www.omdbapi.com/?s=' + search,
+    })
+        .then(function (response) {
+            console.log('search', search)
+            cb(response.data.Search || []);
+        });
+}
 
 export default compose(
-   
+
     withState('movies', 'setMovies', []),
     withHandlers({
-        updateSearchHandler :props => (search) =>{
+        updateSearchHandler: props => (search) => {
             httpCall(search, props.setMovies);
         }
     }),
@@ -108,7 +108,7 @@ export default compose(
                     url: ' http://www.omdbapi.com/?s=' + this.props.search,
                 })
                     .then(function (response) {
-                        
+
                         self.props.setMovies(response.data.Search);
                     });
             }
@@ -118,7 +118,7 @@ export default compose(
     defaultProps({
         search: 'green',
         updatedSearch: "Hello"
-})
+    })
 
 )(Movies);
 
