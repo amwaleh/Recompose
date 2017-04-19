@@ -1,0 +1,11 @@
+plugins": [
+   [
+    "lodash",
+    { id: [
+            "lodash",
+            "recompose"
+        ]
+    }
+]
+]
+}
